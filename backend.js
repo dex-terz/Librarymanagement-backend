@@ -94,10 +94,10 @@ app.get('/books/:name', async (req, res) => {
   }
 });
 
-app.delete('/deletebook/:id', async (req, res) => {
+app.delete('/books/:id', async (req, res) => {
   try {
-    const  identity  = parseInt(req.params.id,10);
-    const result = await client.query('DELETE FROM book WHERE book_id = $1', [identity]);
+    const id = parseInt(req.params.id, 10);
+    const result = await client.query('DELETE FROM book WHERE book_id = $1', [id]);
     if (result.rowCount > 0) {
       res.json({ message: 'Book deleted successfully' });
     } else {
@@ -108,6 +108,7 @@ app.delete('/deletebook/:id', async (req, res) => {
     res.status(500).send('Error deleting book');
   }
 });
+
 app.delete('/deletecust/:id', async (req, res) => {
   try {
     const identity = req.params.id;
