@@ -238,7 +238,7 @@ app.get('/test', (req, res) => {
 // });
 
 
-app.post('/postbooks', async (req, res) => {
+app.post('/books', async (req, res) => {
   const { bookName, author, price, purchaseDate, boughtFrom, bookType, identity } = req.body;
 
   // Generate QR code data
