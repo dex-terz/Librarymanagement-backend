@@ -36,6 +36,9 @@ client.connect()
 app.use(cors()); 
 app.use(express.json()); 
 
+app.get('/', (req, res) => {
+  res.send('Server is running');
+});
 app.get('/books', async (req, res) => {
   try {
     const result = await client.query('SELECT * FROM book ');
