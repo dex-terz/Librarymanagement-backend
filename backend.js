@@ -7,22 +7,26 @@ const QRCode = require('qrcode');
 const app = express();
 const port = process.env.PORT ||3000;
 const PDFDocument = require('pdfkit');
+const dns = require('dns');
+const net = require('net');
 console.log('DATABASE_URL:', process.env.DatabaseLib);
 
-const client = new Client({
-  connectionString: process.env.DatabaseLib,
-  ssl: { rejectUnauthorized: false },
-  host: 'db.fyczwcdyzxtdbkpfyzzn.supabase.co',
-});
-
-client.query('SELECT NOW()', (err, res) => {
+dns.lookup('db.fyczwcdyzxtdbkpfyzzn.supabase.co', { family: 4 }, (err, address) => {
   if (err) {
-    console.error('Connection failed', err);
-  } else {
-    console.log('Connected successfully at', res.rows[0].now);
+    console.error('DNS lookup failed:', err);
+    return;
   }
-});
-client.connect()
+
+  const client = new Client({
+    host: address,
+    port: 5432,
+    user: 'postgres',
+    password: 'Rishabh#1729', // or use process.env
+    database: 'postgres',
+    ssl: { rejectUnauthorized: false }
+  });
+
+  client.connect()
   .then(() => {
     console.log('Connected to PostgreSQL database successfully!');
   })
@@ -31,6 +35,17 @@ client.connect()
     process.exit(1);
   });
   module.exports = client;
+});
+
+
+client.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.error('Connection failed', err);
+  } else {
+    console.log('Connected successfully at', res.rows[0].now);
+  }
+});
+
 
 app.use(cors()); 
 app.use(express.json()); 
