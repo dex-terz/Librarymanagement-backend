@@ -11,7 +11,8 @@ console.log('DATABASE_URL:', process.env.DatabaseLib);
 
 const client = new Client({
   connectionString: process.env.DatabaseLib,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
+  host: 'db.fyczwcdyzxtdbkpfyzzn.supabase.co',
 });
 
 client.query('SELECT NOW()', (err, res) => {
