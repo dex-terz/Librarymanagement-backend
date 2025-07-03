@@ -42,13 +42,7 @@ dns.lookup('db.fyczwcdyzxtdbkpfyzzn.supabase.co', { family: 4 }, (err, address) 
 });
 
 
-client.query('SELECT NOW()', (err, res) => {
-  if (err) {
-    console.error('Connection failed', err);
-  } else {
-    console.log('Connected successfully at', res.rows[0].now);
-  }
-});
+
 
 
 app.use(cors()); 
