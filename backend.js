@@ -7,10 +7,10 @@ const QRCode = require('qrcode');
 const app = express();
 const port = process.env.PORT ||3000;
 const PDFDocument = require('pdfkit');
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
+console.log('DATABASE_URL:', process.env.DatabaseLib);
 
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DatabaseLib,
   ssl: { rejectUnauthorized: false }
 });
 
