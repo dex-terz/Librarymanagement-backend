@@ -11,39 +11,23 @@ const dns = require('dns');
 const net = require('net');
 console.log('DATABASE_URL:', process.env.DatabaseLib);
 
-dns.lookup('db.fyczwcdyzxtdbkpfyzzn.supabase.co', { family: 4 }, (err, address) => {
-  if (err) {
-    console.error('DNS lookup failed:', err);
-    return;
-  }
-  console.log('IPv4 address resolved:', address);
-  const client = new Client({
-    host: address,
-    port: 5432,
-    user: 'postgres',
-    password: 'Rishabh#1729', // or use process.env
-    database: 'postgres',
-    ssl: { rejectUnauthorized: false }
-  });
- client.connect()
-    .then(() => {
-      console.log('Connected to PostgreSQL database successfully!');
-      // ✅ Run query INSIDE this .then()
-      return client.query('SELECT NOW()');
-    })
-    .then(result => {
-      console.log('Current time in DB:', result.rows[0].now);
-    })
-    .catch(error => {
-      console.error('Failed to connect to PostgreSQL database:', error.stack);
-      process.exit(1);
-    });
-  module.exports = client;
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
-
-
-
+client.connect()
+  .then(() => {
+    console.log('Connected to PostgreSQL database successfully!');
+    return client.query('SELECT NOW()');
+  })
+  .then((result) => {
+    console.log('Current time in DB:', result.rows[0].now);
+  })
+  .catch((error) => {
+    console.error('Failed to connect to PostgreSQL database:', error.stack);
+    process.exit(1);
+  });
 
 app.use(cors()); 
 app.use(express.json()); 
