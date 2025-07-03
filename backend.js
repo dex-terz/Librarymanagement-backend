@@ -16,7 +16,7 @@ dns.lookup('db.fyczwcdyzxtdbkpfyzzn.supabase.co', { family: 4 }, (err, address) 
     console.error('DNS lookup failed:', err);
     return;
   }
-
+  console.log('IPv4 address resolved:', address);
   const client = new Client({
     host: address,
     port: 5432,
@@ -25,15 +25,19 @@ dns.lookup('db.fyczwcdyzxtdbkpfyzzn.supabase.co', { family: 4 }, (err, address) 
     database: 'postgres',
     ssl: { rejectUnauthorized: false }
   });
-
-  client.connect()
-  .then(() => {
-    console.log('Connected to PostgreSQL database successfully!');
-  })
-  .catch((error) => {
-    console.error('Failed to connect to PostgreSQL database:', error.stack);
-    process.exit(1);
-  });
+ client.connect()
+    .then(() => {
+      console.log('Connected to PostgreSQL database successfully!');
+      // ✅ Run query INSIDE this .then()
+      return client.query('SELECT NOW()');
+    })
+    .then(result => {
+      console.log('Current time in DB:', result.rows[0].now);
+    })
+    .catch(error => {
+      console.error('Failed to connect to PostgreSQL database:', error.stack);
+      process.exit(1);
+    });
   module.exports = client;
 });
 
